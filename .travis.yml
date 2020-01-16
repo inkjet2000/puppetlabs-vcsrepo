@@ -11,8 +11,8 @@ before_install:
   - gem --version
   - bundle -v
 before_script:
-  - "bundle exec rake litmus:provision\\[docker,$IMAGE]"
-  - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+  - "bundle exec rake litmus:provision_list\\[$LIST]"
+  - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*' || true # ignore for centos"
   - "bundle exec rake 'litmus:install_agent[puppet5]'"
   - "bundle exec rake litmus:install_module"
 script:
@@ -22,17 +22,14 @@ services: docker
 rvm:
   - 2.5.3
 env:
-  - IMAGE=debian:8
-  - IMAGE=debian:9
-  - IMAGE=debian:10
-  - IMAGE=waffleimage/debian8
-  - IMAGE=waffleimage/debian9
-  - IMAGE=waffleimage/debian10
-  - IMAGE=litmusimage/debian:8
-  - IMAGE=litmusimage/debian:9
-  - IMAGE=litmusimage/debian:10
+  - LIST=once
+  - LIST=twice
+  - LIST=thrice
+  - LIST=four
+  - LIST=five
+  - LIST=mix
 branches:
   only:
-    - perftest
+    - perftest2
 notifications:
   email: false
