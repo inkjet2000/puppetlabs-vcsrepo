@@ -12,7 +12,7 @@ before_install:
   - bundle -v
 before_script:
   - "bundle exec rake litmus:provision\\[docker,$IMAGE]"
-  - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+  - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*' || true # ignore failures on centos"
   - "bundle exec rake 'litmus:install_agent[puppet5]'"
   - "bundle exec rake litmus:install_module"
 script:
@@ -31,6 +31,14 @@ env:
   - IMAGE=litmusimage/debian:8
   - IMAGE=litmusimage/debian:9
   - IMAGE=litmusimage/debian:10
+  - IMAGE=centos:6
+  - IMAGE=centos:7
+  - IMAGE=centos:8
+  - IMAGE=waffleimage/centos6
+  - IMAGE=waffleimage/centos7
+  - IMAGE=litmusimage/centos:6
+  - IMAGE=litmusimage/centos:7
+  - IMAGE=litmusimage/centos:8
 branches:
   only:
     - perftest
